@@ -68,7 +68,5 @@ public abstract class ADao<T> implements IDao<T> {
         return t;
     }
 
-    private Class getPersistentClass() {
-        return T;
-    }
+    abstract Class getPersistentClass();
 }

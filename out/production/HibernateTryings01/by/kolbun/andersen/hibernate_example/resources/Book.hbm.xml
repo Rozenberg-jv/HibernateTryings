@@ -3,7 +3,7 @@
         "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         "http://hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="by.kolbun.andersen.hibernate_example">
-    <class name="Book" table="books">
+    <class name="by.kolbun.andersen.hibernate_example.entity.Book" table="books">
         <id name="id" column="id" unsaved-value="null">
             <generator class="native"/>
         </id>
