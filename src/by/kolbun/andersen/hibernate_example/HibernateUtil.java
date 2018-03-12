@@ -12,11 +12,12 @@ public class HibernateUtil {
     static {
         try {
             Configuration configuration = new Configuration();
-            configuration.configure("by/kolbun/andersen/hibernate_example/hibernate.cfg.xml");
+            configuration.configure("by/kolbun/andersen/hibernate_example/resources/hibernate.cfg.xml");
 
             ServiceRegistry serviceRegistry = new ServiceRegistryBuilder()
                     .applySettings(configuration.getProperties()).buildServiceRegistry();
             sessionFactory = configuration.buildSessionFactory(serviceRegistry);
+
         } catch (Throwable ex) {
             throw new ExceptionInInitializerError(ex);
         }

@@ -1,4 +1,4 @@
-package by.kolbun.andersen.hibernate_example;
+package by.kolbun.andersen.hibernate_example.entity;
 
 public class Book {
     private Long id;
