@@ -3,7 +3,16 @@ package by.kolbun.andersen.hibernate_example.entity;
 public class Book {
     private Long id;
     private String title;
-    private int pageCount;
+    private int ISBN;
+    private BookInfo info;
+
+    public BookInfo getInfo() {
+        return info;
+    }
+
+    public void setInfo(BookInfo info) {
+        this.info = info;
+    }
 
     public Long getId() {
         return id;
@@ -21,16 +30,17 @@ public class Book {
         this.title = title;
     }
 
-    public int getPageCount() {
-        return pageCount;
+    public int getISBN() {
+        return ISBN;
     }
 
-    public void setPageCount(int pageCount) {
-        this.pageCount = pageCount;
+    public void setISBN(int ISBN) {
+        this.ISBN = ISBN;
     }
 
     @Override
     public String toString() {
-        return "Book [" + Integer.toHexString(this.hashCode()) + "] id: " + id + ", title: " + title + ", pages: " + pageCount;
+        return this.getClass().getSimpleName() + " [" + Integer.toHexString(this.hashCode()) + "] id: "
+                + id + ", title: " + title + ", pages: " + ISBN;
     }
 }

@@ -15,6 +15,6 @@
         <property name="dialect">org.hibernate.dialect.MySQLDialect</property>
         <property name="hbm2ddl.auto">update</property>
         <!--Mapping-->
-        <mapping resource="by/kolbun/andersen/hibernate_example/resources/Book.hbm.xml"/>
+        <mapping resource="by/kolbun/andersen/hibernate_example/resources/entities.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>
