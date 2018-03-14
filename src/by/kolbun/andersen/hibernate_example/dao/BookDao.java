@@ -12,14 +12,14 @@ public class BookDao extends ADao<Book> {
      * Overloaded method from @Class ADao
      *
      * @param title     - title of new book
-     * @param pageCount - count of pages of new book
+     * @param ISBN - count of pages of new book
      * @return new object of saved Book or null
      */
-    public Book saveOrUpdate(String title, int pageCount) throws DaoException {
+    public Book saveOrUpdate(String title, int ISBN) throws DaoException {
         Book book = null;
         book = new Book();
         book.setTitle(title);
-        book.setISBN(pageCount);
+        book.setISBN(ISBN);
         saveOrUpdate(book);
 
         return book;

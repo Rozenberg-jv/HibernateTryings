@@ -1,9 +1,21 @@
 package by.kolbun.andersen.hibernate_example.entity;
 
-public class Book {
+import javax.persistence.*;
+import java.io.Serializable;
+
+@Entity
+@Table(name = "books")
+public class Book implements Serializable {
+    @Id
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PK")
+//    @SequenceGenerator(name = "PK", sequenceName = "sequence_books")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "title", length = 100, nullable = false)
     private String title;
+    @Column(name = "ISBN", nullable = false)
     private int ISBN;
+    @OneToOne(mappedBy = "book", cascade = CascadeType.ALL)
     private BookInfo info;
 
     public BookInfo getInfo() {
@@ -41,6 +53,6 @@ public class Book {
     @Override
     public String toString() {
         return this.getClass().getSimpleName() + " [" + Integer.toHexString(this.hashCode()) + "] id: "
-                + id + ", title: " + title + ", pages: " + ISBN;
+                + id + ", title: " + title + ", ISBN: " + ISBN + ". Info: " + info;
     }
 }

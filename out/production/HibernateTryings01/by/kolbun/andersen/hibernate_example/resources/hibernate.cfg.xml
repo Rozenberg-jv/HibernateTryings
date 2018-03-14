@@ -4,7 +4,7 @@
         "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
     <session-factory>
-        <property name="connection.url">jdbc:mysql://localhost/library</property>
+        <property name="connection.url">jdbc:mysql://localhost:3306/library</property>
         <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
         <property name="connection.username">root</property>
         <property name="connection.password">root</property>
@@ -14,7 +14,11 @@
         <property name="show_sql">true</property>
         <property name="dialect">org.hibernate.dialect.MySQLDialect</property>
         <property name="hbm2ddl.auto">update</property>
+        <!--log4j-->
+
         <!--Mapping-->
-        <mapping resource="by/kolbun/andersen/hibernate_example/resources/entities.hbm.xml"/>
+        <mapping class="by.kolbun.andersen.hibernate_example.entity.Book"/>
+        <mapping class="by.kolbun.andersen.hibernate_example.entity.BookInfo"/>
+
     </session-factory>
 </hibernate-configuration>

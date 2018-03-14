@@ -3,12 +3,11 @@ package by.kolbun.andersen.hibernate_example.dao;
 import by.kolbun.andersen.hibernate_example.HibernateUtil;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 public abstract class ADao<T> implements IDao<T> {
 
-    private final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+    private final Session session = HibernateUtil.getSession();
     private Transaction transaction;
 
 
@@ -16,13 +15,11 @@ public abstract class ADao<T> implements IDao<T> {
      * Delete record by id
      *
      * @param id - id of record to delete
-     * @throws DaoException
+     * @throws DaoException 1
      */
     @Override
     public void delete(long id) throws DaoException {
-        Session session = null;
         try {
-            session = sessionFactory.openSession();
             transaction = session.beginTransaction();
             T t = (T) session.get(getPersistentClass(), id);
             session.delete(t);
@@ -41,16 +38,14 @@ public abstract class ADao<T> implements IDao<T> {
      *
      * @param t - object to insert
      * @return inserted object
-     * @throws DaoException
+     * @throws DaoException 1
      */
     @Override
     public T saveOrUpdate(T t) throws DaoException {
-        Session session = null;
         try {
-            session = sessionFactory.openSession();
             transaction = session.beginTransaction();
             session.saveOrUpdate(t);
-            session.update(t);
+            session.update(t); //зачем дублировать?
             transaction.commit();
         } catch (HibernateException e) {
             System.out.println("Dao Error saveOrUpdate(): ");
@@ -70,14 +65,12 @@ public abstract class ADao<T> implements IDao<T> {
      *
      * @param id - id of object to find
      * @return object <T> or null
-     * @throws DaoException
+     * @throws DaoException 1
      */
     @Override
     public T find(long id) throws DaoException {
         T t = null;
-        Session session = null;
         try {
-            session = sessionFactory.openSession();
             transaction = session.beginTransaction();
             t = (T) session.get(getPersistentClass(), id);
             transaction.commit();
@@ -93,8 +86,6 @@ public abstract class ADao<T> implements IDao<T> {
 
     public T load(long id) {
         T t;
-        Session session;
-        session = sessionFactory.openSession();
         transaction = session.beginTransaction();
         t = (T) session.load(getPersistentClass(), id);
         transaction.commit();

@@ -4,6 +4,7 @@
     <facet type="hibernate" name="Hibernate">
       <configuration>
         <datasource-map>
+          <unit-entry name="by:kolbun:andersen:hibernate_example:resources:hibernate.cfg.xml" />
           <unit-entry name="hibernate.cfg.xml" />
         </datasource-map>
         <naming-strategy-map />
@@ -20,5 +21,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Hibernate" level="project" />
+    <orderEntry type="library" name="org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16" level="project" />
   </component>
 </module>
