@@ -1,6 +1,6 @@
 package by.kolbun.andersen;
 
-import by.kolbun.andersen.hibernate_example.HibernateExample;
+import by.kolbun.andersen.hibernate_example_annotations.HibernateExample;
 
 public class Main {
 

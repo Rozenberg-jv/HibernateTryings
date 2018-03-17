@@ -1,7 +1,7 @@
-package by.kolbun.andersen.hibernate_example;
+package by.kolbun.andersen.hibernate_example_annotations;
 
-import by.kolbun.andersen.hibernate_example.entity.Book;
-import by.kolbun.andersen.hibernate_example.entity.BookInfo;
+import by.kolbun.andersen.hibernate_example_annotations.entity.Author;
+import by.kolbun.andersen.hibernate_example_annotations.entity.Book;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -16,8 +16,8 @@ public class HibernateUtil {
     static {
         try {
             Configuration configuration = new Configuration();
-            configuration.addAnnotatedClass(BookInfo.class).addAnnotatedClass(Book.class);
-            configuration.configure("by/kolbun/andersen/hibernate_example/resources/hibernate.cfg.xml");
+            configuration.addAnnotatedClass(Book.class).addAnnotatedClass(Author.class);
+            configuration.configure("by/kolbun/andersen/hibernate_example_annotations/resources/hibernate.cfg.xml");
 
             ServiceRegistry serviceRegistry = new ServiceRegistryBuilder()
                     .applySettings(configuration.getProperties()).buildServiceRegistry();
