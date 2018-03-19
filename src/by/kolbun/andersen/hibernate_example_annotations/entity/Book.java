@@ -6,6 +6,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "books")
+//@SuppressWarnings("all")
 public class Book {
     @Id
     @GeneratedValue

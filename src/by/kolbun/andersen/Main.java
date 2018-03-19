@@ -6,7 +6,8 @@ public class Main {
 
     public static void main(String[] args) {
 
-        new HibernateExample().exec();
+        new HibernateExample().execCrud();
+//        new HibernateExample().execThreads();
 
     }
 }
