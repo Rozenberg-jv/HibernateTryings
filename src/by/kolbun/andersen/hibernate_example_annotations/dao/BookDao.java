@@ -133,11 +133,19 @@ public class BookDao implements IDao {
     public String getGeneralReport() {
         StringBuilder sb = new StringBuilder();
 
-        sb.append(">>\t General report <<");
+        sb.append(">>\t General report <<\n");
         Criteria crit = session.createCriteria(Book.class);
         crit.setProjection(Projections.rowCount());
-        
-
+        sb.append(">>\t Count of books: ").append(crit.list().get(0)).append("\n");
+        Criteria crit2 = session.createCriteria(Author.class);
+        crit2.setProjection(Projections.distinct(Projections.property("status")));
+        List l = crit2.list();
+        sb.append(">>\t List of authors statuses: \n");
+        for (Object o : l)
+            sb.append(">>\t").append(o).append("\n");
+        Criteria crit3 = session.createCriteria(Author.class);
+        crit3.setProjection(Projections.avg("age"));
+        sb.append(">>\t Average age of authors: " + crit3.list().get(0));
 
         return sb.toString();
     }
