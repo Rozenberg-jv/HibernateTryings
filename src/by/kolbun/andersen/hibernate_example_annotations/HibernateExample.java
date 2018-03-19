@@ -1,14 +1,47 @@
 package by.kolbun.andersen.hibernate_example_annotations;
 
 
+import by.kolbun.andersen.hibernate_example_annotations.users_mock.User1;
+import by.kolbun.andersen.hibernate_example_annotations.users_mock.User2;
+import by.kolbun.andersen.hibernate_example_annotations.users_mock.User3;
+import by.kolbun.andersen.hibernate_example_annotations.users_mock.User4;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class HibernateExample {
 
+    public static boolean stopThreads = false;
+
     public void execThreads() {
 
+        BookService service = new BookService();
+        service.clearTables();
+        service.insertData(5);
+
+        Thread t1 = new Thread(new User1("user select ", 600));
+        Thread t2 = new Thread(new User2("user ins&del", 510));
+        Thread t3 = new Thread(new User3("user up titl", 720));
+        Thread t4 = new Thread(new User4("user up isbn", 430));
+
+        t1.start();
+        t2.start();
+        t3.start();
+        t4.start();
+
+        try {
+            Thread.sleep(3000);
+            stopThreads = true;
+            t1.join();
+            t2.join();
+            t3.join();
+            t4.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+            System.out.println("- ! Main thread ends ! -");
+        }
     }
 
     public void execCrud() {
@@ -29,7 +62,7 @@ public class HibernateExample {
                         printLegend();
                         break;
                     case "1":
-                        service.showTable().forEach(System.out::println);
+                        service.getTable().forEach(System.out::println);
                         break;
                     case "2":
                         System.out.println("Enter book info: title, ISBN and count of authors, via spaces:");

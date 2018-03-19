@@ -15,43 +15,48 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BookDao implements IDao {
+    private static BookDao daoInstance = new BookDao();
     private Session session = HibernateUtil.getSession();
     private Transaction transaction;
 
+    public static BookDao getDaoInstance() {
+        return daoInstance;
+    }
+
     @Override
-    public int add(Book t) {
-        transaction = getTransaction();
+    public synchronized int add(Book t) {
+        transaction = session.beginTransaction();
         int id = (int) session.save(t);
-        System.out.println("add()    -> " + printTransInfo());
+//        System.out.println("add()    -> " + printTransInfo());
         transaction.commit();
         return id;
     }
 
     @Override
-    public Book get(int id) {
-        transaction = getTransaction();
+    public synchronized Book get(int id) {
+        transaction = session.beginTransaction();
         Criteria crit = session.createCriteria(Book.class);
         crit.add(Restrictions.eq("id", id));
         Book result = (Book) crit.uniqueResult();
-        System.out.println("get() -> " + printTransInfo());
+//        System.out.println("get() -> " + printTransInfo());
         transaction.commit();
         return result;
     }
 
     @Override
-    public List<Book> getAll() {
+    public synchronized List<Book> getAll() {
         List<Book> result;
-        transaction = getTransaction();
+        transaction = session.beginTransaction();
         Criteria crit = session.createCriteria(Book.class);
         result = crit.list();
-        System.out.println("getAll() -> " + printTransInfo());
+//        System.out.println("getAll() -> " + printTransInfo());
         transaction.commit();
         return result;
     }
 
     /*@Override
     public void update(Book t) {
-        transaction = getTransaction();
+        transaction = session.beginTransaction();
         Book b = (Book) session.get(Book.class, t.getId());
         b.getAuthors().clear();
         b.getAuthors().addAll(t.getAuthors());
@@ -63,31 +68,31 @@ public class BookDao implements IDao {
     }*/
 
     @Override
-    public void update(Book t) {
-        transaction = getTransaction();
+    public synchronized void update(Book t) {
+        transaction = session.beginTransaction();
         session.update(t);
-        System.out.println("update() -> " + printTransInfo());
+//        System.out.println("update() -> " + printTransInfo());
         transaction.commit();
     }
 
     @Override
-    public void delete(int id) {
-        transaction = getTransaction();
+    public synchronized void delete(int id) {
+        transaction = session.beginTransaction();
         Book b = (Book) session.load(Book.class, id);
         session.delete(b);
-        System.out.println("delete() -> " + printTransInfo());
+//        System.out.println("delete() -> " + printTransInfo());
         transaction.commit();
     }
 
     @Override
-    public void finish() {
+    public synchronized void finish() {
         if (session != null && !session.isOpen()) session.close();
     }
 
-    private Transaction getTransaction() {
+    /*private Transaction getTransaction() {
         if (transaction == null || !transaction.isActive()) return session.beginTransaction();
         return transaction;
-    }
+    }*/
 
     private String printTransInfo() {
         return " > info > transaction: " + Integer.toHexString(transaction.hashCode());
@@ -95,16 +100,16 @@ public class BookDao implements IDao {
 
     //
 
-    public List<Author> getAllAuthors() {
-        transaction = getTransaction();
+    public synchronized List<Author> getAllAuthors() {
+        transaction = session.beginTransaction();
         Criteria crit = session.createCriteria(Author.class);
         List<Author> result = crit.list();
         transaction.commit();
         return result;
     }
 
-    public void clearTables() {
-        transaction = getTransaction();
+    public synchronized void clearTables() {
+        transaction = session.beginTransaction();
         SQLQuery query = session.createSQLQuery("DELETE FROM `books_authors`;");
         query.executeUpdate();
         query = session.createSQLQuery("DELETE FROM `authors`;");
@@ -114,8 +119,8 @@ public class BookDao implements IDao {
         transaction.commit();
     }
 
-    public void insertData(int n) {
-//        transaction = getTransaction();
+    public synchronized void insertData(int n) {
+//        transaction = session.beginTransaction();
         for (int i = 0; i < n; i++) {
             List l = new ArrayList();
             l.add(new Author("name" + i, 20, "status" + i));
@@ -126,7 +131,7 @@ public class BookDao implements IDao {
 //        transaction.commit();
     }
 
-    public void flush() {
+    public synchronized void flush() {
         session.flush();
     }
 
@@ -148,5 +153,11 @@ public class BookDao implements IDao {
         sb.append(">>\t Average age of authors: " + crit3.list().get(0));
 
         return sb.toString();
+    }
+
+    public List getListOfBooksIds() {
+        Criteria crit = session.createCriteria(Book.class);
+        crit.setProjection(Projections.property("id"));
+        return crit.list();
     }
 }

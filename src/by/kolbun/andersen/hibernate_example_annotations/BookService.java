@@ -6,30 +6,33 @@ import by.kolbun.andersen.hibernate_example_annotations.entity.Book;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 
 public class BookService {
-    private BookDao dao = new BookDao();
+    private BookDao dao = BookDao.getDaoInstance();
 
 
+    //for init
     public void clearTables() {
         dao.clearTables();
     }
 
+    //for init
     public void insertData(int i) {
         dao.insertData(i);
     }
 
-    public List<Book> showTable() {
+    public synchronized List<Book> getTable() {
         return dao.getAll();
     }
 
-    public void insertRecord(String[] data, String[][] aut_data) {
+    public int insertRecord(String[] data, String[][] aut_data) {
         List l = new ArrayList();
         for (String[] s : aut_data)
             l.add(new Author(s[0], Integer.parseInt(s[1]), s[2]));
         Book b = new Book(data[0], Integer.parseInt(data[1]), l);
-        dao.add(b);
+        return dao.add(b);
     }
 
     public void updateById(String[] data, String val) {
@@ -79,5 +82,11 @@ public class BookService {
         Book b = dao.get(id);
         b.getAuthors().add(new Author(s[0], Integer.parseInt(s[1]), s[2]));
         dao.flush();
+    }
+
+    public int getRandomIdOfBooks() {
+        List l = dao.getListOfBooksIds();
+        int r = new Random().nextInt(l.size());
+        return (int)l.get(r);
     }
 }
